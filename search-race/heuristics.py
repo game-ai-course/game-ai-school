@@ -19,13 +19,14 @@ def heuristic2(checkpoint, x, y, angle):
     Включаем полный ход, если смотрим почти на следующий флаг.
     Поворачиваемся в сторону следюующего флага.
     """
-    dx = cp[0] - x
-    dy = cp[1] - y
+    cx, cy = checkpoint
+    dx = cx - x
+    dy = cy - y
     cp_angle = math.atan2(dy, dx) * 180 / math.pi
     da = norm_angle(cp_angle - angle)
     if abs(da) > 15:
-        return f"{cp[0]} {cp[1]} 0 turn"
-    return f"{cp[0]} {cp[1]} 200 thrust"
+        return f"{cx} {cy} 0 turn"
+    return f"{cx} {cy} 200 thrust"
 
 
 def heuristic3(cp, x, y, vx, vy, angle):
@@ -52,7 +53,7 @@ def main():
         checkpoint = checkpoints[checkpoint_index]
         # X Y THRUST MESSAGE
         # print(heuristic(checkpoint))
-        print(heuristic2(checkpoint))
+        print(heuristic2(checkpoint, x, y, angle))
 
 
 if __name__ == '__main__':
