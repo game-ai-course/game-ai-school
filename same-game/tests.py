@@ -47,7 +47,7 @@ def test_apply_move():
         '1 1 3',
         '1 2 3'])
     move = [m for m in s.moves() if (0, 1) in m][0]
-    s.apply_move(move)
+    s = s.apply_move(move)
     expected = [
         '. . 1',
         '. 2 3',
@@ -61,7 +61,7 @@ def test_apply_move_compaction():
         '2 1 1',
         '3 1 2'])
     move = [m for m in s.moves() if (1, 0) in m][0]
-    s.apply_move(move)
+    s = s.apply_move(move)
     expected = [
         '1 .',
         '2 3',

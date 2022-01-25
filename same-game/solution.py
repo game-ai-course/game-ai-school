@@ -1,6 +1,4 @@
-import random
 import sys
-import time
 
 
 class State:
@@ -33,21 +31,11 @@ class State:
         pass
 
 
-    def apply_move(self, move):
+    def apply_move(self, move) -> 'State':
         """
-        Применяет ход:
-        1. Удаляет область клеточек.
-        2. Сдвигает нужные клетки над удалённой областью вниз.
-        3. Если освободился один или несколько столбцов, сдвигает правую часть влево.
+        Применяет ход и возвращает новое состояние (не меняя текущее!)
 
         * Как это реализовать в коде?
-        """
-        pass
-
-
-    def copy(self) -> 'State':
-        """
-        Создает полную копию состояния игры
         """
         pass
 
@@ -88,8 +76,8 @@ def read_state_from(lines: list[str]) -> State:
             row.append(-1 if color == '.' else int(color))
         rows.append(row)
 
-    # меняем местами строки со столбцами, ориентированными снизу вверх
-    cols = [[row[x] for row in reversed(rows)] for x in range(len(rows[0]))]
+    # Переводим в наш формат: список столбцов, клетки в которых перечислены снизу вверх, без пустых клеток
+    cols = [[row[x] for row in reversed(rows) if row[x] != -1] for x in range(len(rows[0]))]
     return State(cols)
 
 
@@ -99,17 +87,21 @@ def read_state() -> State:
 
 
 def main():
-    moves = None
+    moves = []
     move_index = 0
+    first_move = True
     while True:
         state = read_state()
-        if moves is None or move_index >= len(moves):
-            timeout = 19 if moves is None else 0.05
+        if first_move:
+            print(state, file=sys.stderr)
+        if move_index >= len(moves):
+            timeout = 19 if first_move else 0.05
             moves = solve(state, timeout)
             move_index = 0
         x, y = moves[move_index][0]
         move_index += 1
         print(x, y)
+        first_move = False
 
 
 if __name__ == '__main__':
