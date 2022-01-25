@@ -24,16 +24,3 @@
 но ещё удобнее программировать в привычной для себя IDE.
 Например, pycharm для питона. 
 Установите на компьютер IDE и проверьте, что она работает.
-
-## День 1
-
-Игра [Search Race](https://www.codingame.com/multiplayer/optimization/search-race)
-
-[Стартовый код](/search-race/heuristics.py) для эвристических алгоритмов.
-
-[Код с реализацией симуляции](/search-race/simulation.py).
-
-## День 2
-
-Игра [Same Game](https://www.codingame.com/multiplayer/optimization/samegame)
-

@@ -1,4 +1,3 @@
-import sys
 import math
 
 
@@ -7,7 +6,7 @@ def heuristic(checkpoints):
     return f"{checkpoints[0]} {checkpoints[1]} 200"
 
 
-def norm_angle(a):
+def norm_angle(a: float) -> float:
     a = a % 360  # 0..360
     if a > 180:
         a -= 360  # -180..180
@@ -17,7 +16,7 @@ def norm_angle(a):
 def heuristic2(checkpoint, x, y, angle):
     """
     Включаем полный ход, если смотрим почти на следующий флаг.
-    Поворачиваемся в сторону следюующего флага.
+    Поворачиваемся в сторону следующего флага.
     """
     cx, cy = checkpoint
     dx = cx - x

@@ -1,27 +1,32 @@
+import random
 import sys
-import math
+import time
+
 
 class State:
-    def __init__(self, columns: list[list[int]]):
-        self.h = len(columns)
-        self.w = len(columns[0])
+    def __init__(self, columns: list[list[int]], score: int = 0):
         self.columns = columns
+        self.score = score
+
 
     def __str__(self):
-        h = len(self.columns[0])
         w = len(self.columns)
-        res = f'{self.score}\n'
+        if w == 0:
+            return '.'
+        h = max(len(col) for col in self.columns)
+        rows = []
         for y in range(h - 1, -1, -1):
+            row = []
             for x in range(w):
-                res += '.' if self.columns[x][y] == -1 else str(self.columns[x][y])
-            res += '\n'
-        return res
+                row.append('.' if y >= len(self.columns[x]) else str(self.columns[x][y]))
+            rows.append(' '.join(row))
+        return '\n'.join(rows)
 
 
     def moves(self):
         """
         Возвращает список ходов, которые можно отправить в apply_move
-        
+
         * Как представлять один ход?
         * Как искать все ходы?
         """
@@ -30,7 +35,7 @@ class State:
 
     def apply_move(self, move):
         """
-        Применяет ход: 
+        Применяет ход:
         1. Удаляет область клеточек.
         2. Сдвигает нужные клетки над удалённой областью вниз.
         3. Если освободился один или несколько столбцов, сдвигает правую часть влево.
@@ -40,7 +45,7 @@ class State:
         pass
 
 
-    def copy(self) -> State:
+    def copy(self) -> 'State':
         """
         Создает полную копию состояния игры
         """
@@ -55,18 +60,24 @@ def greedy_ai(state: State, estimate):
     pass
 
 
-def estimate_move(state, move) -> float:
+def estimate_move(state: State, move) -> float:
+    """
+    Чем больше возвращаемое число, тем более хороший это ход.
+    """
     pass
 
 
-def solve(state: State) -> list:
-    moves = []
-    while True:
-        move = greedy_ai(state, estimate_move)
-        if move is None:
-            return moves
-        moves.append(move)
-        state.apply_move(move)
+def solve(state: State, seconds: float):
+    """
+    Возвращает сколько-то первых ходов для решения уровня.
+    Может вернуть только 1 первый ход. В первой практике так и нужно делать.
+    
+    Но на codingame.com на первый ход дают 20 секунд, а на последующие всего по 50ms.
+    Поэтому выгодно решить полностью весь уровень на первом ходу и вернуть список всех ходов.
+    Во время второй практики, после реализации apply_move переделайте этот метод так, чтобы он возвращал всю последовательность ходов до завершения уровня.
+    """
+    move = greedy_ai(state, estimate_move)
+    return [move]
 
 
 def read_state_from(lines: list[str]) -> State:
@@ -74,7 +85,7 @@ def read_state_from(lines: list[str]) -> State:
     for line in lines:
         row = []
         for color in line.split():
-            row.append(color)
+            row.append(-1 if color == '.' else int(color))
         rows.append(row)
 
     # меняем местами строки со столбцами, ориентированными снизу вверх
@@ -93,11 +104,12 @@ def main():
     while True:
         state = read_state()
         if moves is None or move_index >= len(moves):
-            moves = list(solve(state, 19 if moves is None else 0.05))
+            timeout = 19 if moves is None else 0.05
+            moves = solve(state, timeout)
             move_index = 0
-        move = moves[move_index]
+        x, y = moves[move_index][0]
         move_index += 1
-        print(move[0], move[1])
+        print(x, y)
 
 
 if __name__ == '__main__':
