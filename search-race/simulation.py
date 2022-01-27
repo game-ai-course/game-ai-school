@@ -35,14 +35,8 @@ class State:
     def copy(self):
         return State(self.checkpoints, [self.checkpoint_index, self.x, self.y, self.vx, self.vy, self.angle])
 
-    def checkpoint(self):
-        return self.checkpoints[self.checkpoint_index % len(self.checkpoints)]
-
     def next_checkpoint(self):
-        return self.checkpoints[(self.checkpoint_index + 1) % len(self.checkpoints)]
-
-    def set_next_move(self, next_move):
-        self.next_move = next_move
+        return self.checkpoints[self.checkpoint_index]
 
     def simulate(self):
         desired_angle = 180 * math.atan2(self.next_move.y - self.y, self.next_move.x - self.x) / math.pi
@@ -56,7 +50,7 @@ class State:
         self.vx = int(0.85 * self.vx)
         self.vy = int(0.85 * self.vy)
         self.angle = round(self.angle) % 360
-        xc, yc = self.checkpoint()
+        xc, yc = self.next_checkpoint()
         dx, dy = self.x - xc, self.y - yc
         if dx * dx + dy * dy <= 600 * 600:
             self.checkpoint_index += 1
@@ -67,7 +61,7 @@ def heuristic(state):
     Включаем полный ход, если смотрим почти на следующий флаг.
     Поворачиваемся в сторону следующего флага.
     """
-    cp = state.checkpoint()
+    cp = state.next_checkpoint()
     dx = cp[0] - state.x
     dy = cp[1] - state.y
     cp_angle = math.atan2(dy, dx) * 180 / math.pi
@@ -85,6 +79,27 @@ def read_checkpoints():
     return checkpoints
 
 
+def estimate(state):
+    """
+    Возвращает оценку state.
+    Чем больше число, тем более желаемый state.
+    Чем больше checkpoint_index, тем лучше
+    Чем ближе следующий чекпоинт, тем луче
+    """
+    pass
+
+
+def random_search(state, depth):
+    """
+    Пока есть время — генерирует новую последовательность из depth случайных ходов.
+    Симулирует эту последовательность.
+    Оценивает финальное состояние после эти depth шагов и запоминает лучшую.
+
+    Когда время закончилось, возвращает первый ход из лучшей последовательности.
+    """
+    pass
+
+
 def main():
     checkpoints = read_checkpoints()
     old_state = None
@@ -95,8 +110,10 @@ def main():
             print(old_state, file=sys.stderr)
             # check simulation is correct
             # assert str(old_state) == str(state)
+
+        # Поменяйте вызов heuristic на random_search
         state.next_move = heuristic(state)
-        # state.next_move = random_search(...)
+        # state.next_move = random_search(state)
         print(state.next_move)
         state.simulate()
         old_state = state
