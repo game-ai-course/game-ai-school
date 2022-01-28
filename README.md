@@ -40,3 +40,12 @@
 [Код с реализацией симуляции](/search-race/simulation.py).
 
 [Слайды](day1-montecarlo.pptx)
+
+## День 2
+
+Игра [Same Game](https://www.codingame.com/multiplayer/optimization/samegame)
+
+[Код с реализацией симуляции](/same-game/solution.py).
+
+[Слайды](day2-greedy.pptx)
+
