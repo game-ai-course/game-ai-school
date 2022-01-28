@@ -49,3 +49,6 @@
 
 [Слайды](day2-greedy.pptx)
 
+## День 3
+
+[Слайды](day3-beam.pptx)
