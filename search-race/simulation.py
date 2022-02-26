@@ -56,18 +56,36 @@ class State:
             self.checkpoint_index += 1
 
 
-def heuristic(state):
+def estimate(state):
     """
-    Включаем полный ход, если смотрим почти на следующий флаг.
-    Поворачиваемся в сторону следующего флага.
+    Возвращает оценку state.
+    Чем больше число, тем более желаемый state.
+    Чем больше checkpoint_index, тем лучше
+    Чем ближе следующий чекпоинт, тем луче
     """
-    cp = state.next_checkpoint()
-    dx = cp[0] - state.x
-    dy = cp[1] - state.y
-    cp_angle = math.atan2(dy, dx) * 180 / math.pi
-    da = norm_angle(cp_angle - state.angle)
-    thrust = 200 if abs(da) < 15 else 0
-    return Move(cp[0], cp[1], thrust, "heuristic")
+    pass
+
+
+def create_random_moves(count):
+    """
+    Создает и возвращает массив из count случайных объектов Move.
+    """
+    pass
+
+
+
+def random_search(state, depth):
+    """
+    Пока есть время — создаёт новую последовательность из depth случайных ходов с помощью функции create_random_moves
+    Симулирует эту последовательность ходов.
+    Оценивает финальное состояние после эти depth шагов с помощью функции estimate и запоминает лучшую.
+
+    Когда время закончилось, возвращает лучшую последовательность ходов.
+    
+    На ход есть игра даёт 50 миллисекунд. 
+    Чтобы засечь время, воспользуйтесь функцией time.time() — она возвращает текущее время в секундах (дробное число).
+    """
+    pass
 
 
 def read_checkpoints():
@@ -79,27 +97,6 @@ def read_checkpoints():
     return checkpoints
 
 
-def estimate(state):
-    """
-    Возвращает оценку state.
-    Чем больше число, тем более желаемый state.
-    Чем больше checkpoint_index, тем лучше
-    Чем ближе следующий чекпоинт, тем луче
-    """
-    pass
-
-
-def random_search(state, depth):
-    """
-    Пока есть время — генерирует новую последовательность из depth случайных ходов.
-    Симулирует эту последовательность.
-    Оценивает финальное состояние после эти depth шагов и запоминает лучшую.
-
-    Когда время закончилось, возвращает первый ход из лучшей последовательности.
-    """
-    pass
-
-
 def main():
     checkpoints = read_checkpoints()
     old_state = None
@@ -108,13 +105,15 @@ def main():
         print(state, file=sys.stderr)
         if old_state:
             print(old_state, file=sys.stderr)
-            # check simulation is correct
+            # Проверка, что наша симуляция работает точно так же как и официальная.
+            # Если раскомментировать строку ниже, то решение начнет падать с ошибкой каждый раз, 
+            # когда наша симуляция ошиблась, предсказывая к чему приведет наш предыдущий ход
             # assert str(old_state) == str(state)
 
-        # Поменяйте вызов heuristic на random_search
-        state.next_move = heuristic(state)
-        # state.next_move = random_search(state)
+        best_moves = random_search(state)
+        state.next_move = best_moves[0]
         print(state.next_move)
+        
         state.simulate()
         old_state = state
 
