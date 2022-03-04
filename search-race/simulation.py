@@ -13,7 +13,7 @@ def norm_angle(a):
 
 
 class Move:
-    def __init__(self, x, y, thrust, message):
+    def __init__(self, x, y, thrust, message = ""):
         self.x, self.y, self.thrust, self.message = x, y, thrust, message
 
     def __str__(self):
@@ -21,13 +21,15 @@ class Move:
 
 
 class State:
-    def __init__(self, ckeckpoints, args):
+    def __init__(self, checkpoints, args):
         """
         args: checkpoint_index, x, y, vx, vy, angle
         """
-        self.checkpoints = ckeckpoints
+        self.checkpoints = checkpoints
+		self.checkpoint_index = checkpoint_index
+		self.x = x
+		self.y = y
         self.checkpoint_index, self.x, self.y, self.vx, self.vy, self.angle = args
-        self.next_move = Move(0, 0, 0, "init")
 
     def __str__(self):
         return f'{self.checkpoint_index} {self.x} {self.y} {self.vx} {self.vy} {self.angle}'
@@ -36,15 +38,15 @@ class State:
         return State(self.checkpoints, [self.checkpoint_index, self.x, self.y, self.vx, self.vy, self.angle])
 
     def next_checkpoint(self):
-        return self.checkpoints[self.checkpoint_index]
+        return self.checkpoints[self.checkpoint_index % len(self.checkpoints)]
 
-    def simulate(self):
-        desired_angle = 180 * math.atan2(self.next_move.y - self.y, self.next_move.x - self.x) / math.pi
+    def simulate(self, move: Move):
+        desired_angle = 180 * math.atan2(move.y - self.y, move.x - self.x) / math.pi
         da = norm_angle(desired_angle - self.angle)
         da = max(-18, min(18, da))
         self.angle = self.angle + da
-        self.vx += self.next_move.thrust * math.cos(self.angle * math.pi / 180)
-        self.vy += self.next_move.thrust * math.sin(self.angle * math.pi / 180)
+        self.vx += move.thrust * math.cos(self.angle * math.pi / 180)
+        self.vy += move.thrust * math.sin(self.angle * math.pi / 180)
         self.x = int(self.x + self.vx)
         self.y = int(self.y + self.vy)
         self.vx = int(0.85 * self.vx)
@@ -66,9 +68,9 @@ def estimate(state):
     pass
 
 
-def create_random_moves(count):
+def create_random_moves(depth):
     """
-    Создает и возвращает массив из count случайных объектов Move.
+    Создает и возвращает массив из depth случайных объектов Move.
     """
     pass
 
