@@ -18,7 +18,7 @@
 
 Игра [Same Game](https://www.codingame.com/multiplayer/optimization/samegame)
 
-[Код с реализацией симуляции](/same-game/solution.py).
+[Стартовый код](/same-game/solution.py) для жадного алгоритма.
 
-[Юнит-тесты](/same-game/tests.py).
+[Юнит-тесты](/same-game/tests.py) для проверки корректности своего решения.
 
