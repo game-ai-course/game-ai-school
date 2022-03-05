@@ -73,9 +73,11 @@ def test_solve():
     state = read_state_from(
         '3 1 1 4 1 0 4 0 4 4 1 1 0 2 3\n3 3 2 0 4 4 1 3 1 2 0 0 4 0 4\n0 2 3 4 3 0 3 0 0 3 4 4 1 1 1\n2 3 4 0 2 3 0 2 4 4 4 3 0 2 3\n1 2 1 3 1 2 0 1 2 1 0 3 4 0 1\n0 4 4 3 0 3 4 2 2 2 0 2 3 4 0\n2 4 3 4 2 3 1 1 1 3 4 1 0 3 1\n1 0 0 4 0 3 1 2 1 0 4 1 3 3 1\n1 3 3 2 0 4 3 1 3 0 4 1 0 0 3\n0 3 3 4 2 3 0 0 2 1 2 3 4 0 1\n0 4 1 2 0 1 3 4 3 3 4 1 4 0 4\n2 2 3 1 0 4 0 1 2 4 1 3 3 0 1\n3 3 0 2 3 2 1 4 3 1 3 0 2 1 3\n1 0 3 2 1 4 4 4 4 0 4 2 1 3 4\n1 0 1 0 1 1 2 2 1 0 0 1 4 3 2'
         .splitlines())
-    moves = solve(state, 19)
-    # TODO: apply moves, and print final score
+    moves = solve(state)
     print(moves)
+    for m in moves:
+        state = state.apply_move(m)
+    print(state.score)
 
 
 
@@ -84,6 +86,6 @@ def test_profile_solve():
         '3 1 1 4 1 0 4 0 4 4 1 1 0 2 3|3 3 2 0 4 4 1 3 1 2 0 0 4 0 4|0 2 3 4 3 0 3 0 0 3 4 4 1 1 1|2 3 4 0 2 3 0 2 4 4 4 3 0 2 3|1 2 1 3 1 2 0 1 2 1 0 3 4 0 1|0 4 4 3 0 3 4 2 2 2 0 2 3 4 0|2 4 3 4 2 3 1 1 1 3 4 1 0 3 1|1 0 0 4 0 3 1 2 1 0 4 1 3 3 1|1 3 3 2 0 4 3 1 3 0 4 1 0 0 3|0 3 3 4 2 3 0 0 2 1 2 3 4 0 1|0 4 1 2 0 1 3 4 3 3 4 1 4 0 4|2 2 3 1 0 4 0 1 2 4 1 3 3 0 1|3 3 0 2 3 2 1 4 3 1 3 0 2 1 3|1 0 3 2 1 4 4 4 4 0 4 2 1 3 4|1 0 1 0 1 1 2 2 1 0 0 1 4 3 2'
         .split('|'))
     with cProfile.Profile() as pr:
-        solve(state, 19)
+        solve(state)
     pr.print_stats(1)
 
