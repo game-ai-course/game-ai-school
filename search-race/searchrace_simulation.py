@@ -31,7 +31,7 @@ class State:
 
 
     def __str__(self):
-        return f'State(checkpoints, {self.checkpoint_index}, {self.x}, {self.y}, {self.vx}, {self.vy}, {self.angle})'
+        return f'{self.checkpoints}, {self.checkpoint_index}, {self.x}, {self.y}, {self.vx}, {self.vy}, {self.angle})'
 
 
     def copy(self):
