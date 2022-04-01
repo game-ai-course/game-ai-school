@@ -24,4 +24,4 @@
 
 [Юнит-тесты](/same-game/tests.py) для проверки корректности своего решения.
 
-[Лидерборд школы учителей март 2022](https://docs.google.com/spreadsheets/d/1WSjvCBzfQUUCSWkiHbSvjwpa4u8yLpZqoUuzhWb06GM/edit?usp=sharing)
+[Лидерборд школы ботов с 31.03](https://docs.google.com/spreadsheets/d/1mfJHXhHVMFbYkCBZQaqT4MkrONBIkfx2OJJbkKc64q4/edit?usp=sharing)
