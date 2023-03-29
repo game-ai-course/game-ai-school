@@ -1,9 +1,9 @@
 import math
 
 
-def heuristic(checkpoints):
+def heuristic(checkpoint):
     """На полном ходу летим к следующему флагу"""
-    return f"{checkpoints[0]} {checkpoints[1]} 200"
+    return f"{checkpoint[0]} {checkpoint[1]} 200"
 
 
 def norm_angle(a: float) -> float:
