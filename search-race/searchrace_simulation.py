@@ -29,18 +29,14 @@ class State:
         self.vy = vy
         self.angle = angle
 
-
     def __str__(self):
         return f'State(checkpoints, {self.checkpoint_index}, {self.x}, {self.y}, {self.vx}, {self.vy}, {self.angle})'
-
 
     def copy(self):
         return State(self.checkpoints, self.checkpoint_index, self.x, self.y, self.vx, self.vy, self.angle)
 
-
     def next_checkpoint(self):
         return self.checkpoints[self.checkpoint_index % len(self.checkpoints)]
-
 
     def simulate(self, move: Move):
         desired_angle = 180 * math.atan2(move.y - self.y, move.x - self.x) / math.pi
@@ -77,8 +73,6 @@ def create_random_moves(depth):
     pass
 
 
-
-
 def random_search(state, depth):
     """
     Реализация алгоритма Monte-Carlo (другое название — случайный поиск)
@@ -101,7 +95,6 @@ def random_search(state, depth):
     # отладочный вывод: лучший, найденный счёт; количество изученных случайных решений; лучшая последовательность ходов
     print(best_score, simulations_count, list(map(str, best_moves)), file=sys.stderr)
     return best_moves
-
 
 
 def read_checkpoints():
