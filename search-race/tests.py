@@ -1,5 +1,5 @@
 import sys
-import pytest
+# import pytest
 from searchrace_simulation import *
 
 
