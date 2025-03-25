@@ -4,7 +4,7 @@ import math
 import time
 
 
-def norm_angle(a):
+def norm_angle(a: float) -> float:
     a = a % 360  # 0..360
     if a > 180:
         a -= 360  # -180..180
@@ -12,15 +12,18 @@ def norm_angle(a):
 
 
 class Move:
-    def __init__(self, x, y, thrust, message=""):
+    def __init__(self, x: int, y: int, thrust: int, message: str = ""):
         self.x, self.y, self.thrust, self.message = x, y, thrust, message
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.x} {self.y} {self.thrust} {self.message}'
 
 
 class State:
-    def __init__(self, checkpoints, checkpoint_index, x, y, vx, vy, angle):
+    def __init__(self, checkpoints: list[tuple[int, int]], checkpoint_index: int,
+                 x: int, y: int,
+                 vx: int, vy: int,
+                 angle: int):
         self.checkpoints = checkpoints
         self.checkpoint_index = checkpoint_index
         self.x = x
@@ -29,16 +32,16 @@ class State:
         self.vy = vy
         self.angle = angle
 
-    def __str__(self):
-        return f'State(checkpoints, {self.checkpoint_index}, {self.x}, {self.y}, {self.vx}, {self.vy}, {self.angle})'
+    def __str__(self) -> str:
+        return f'{self.checkpoints}, {self.checkpoint_index}, {self.x}, {self.y}, {self.vx}, {self.vy}, {self.angle}'
 
-    def copy(self):
+    def copy(self) -> State:
         return State(self.checkpoints, self.checkpoint_index, self.x, self.y, self.vx, self.vy, self.angle)
 
-    def next_checkpoint(self):
+    def next_checkpoint(self) -> tuple[int, int]:
         return self.checkpoints[self.checkpoint_index % len(self.checkpoints)]
 
-    def simulate(self, move: Move):
+    def simulate(self, move: Move) -> None:
         desired_angle = 180 * math.atan2(move.y - self.y, move.x - self.x) / math.pi
         da = norm_angle(desired_angle - self.angle)
         da = max(-18, min(18, da))
@@ -56,8 +59,10 @@ class State:
             self.checkpoint_index += 1
 
 
-def estimate(state):
+def estimate(state: State) -> float:
     """
+    Задание 1.
+
     Возвращает оценку state.
     Чем больше число, тем более желаемый state.
     Чем больше checkpoint_index, тем лучше
@@ -66,25 +71,31 @@ def estimate(state):
     pass
 
 
-def create_random_moves(depth):
+def create_random_moves(depth: int) -> list[Move]:
     """
+    Задание 2.
+
     Создает и возвращает массив из depth случайных объектов Move.
     """
     pass
 
 
-def random_search(state, depth):
+def random_search(state: State, depth: int) -> list[Move]:
     """
+    Задание 3.
+
     Реализация алгоритма Monte-Carlo (другое название — случайный поиск)
-    
+
     Пока есть время — создаёт новую последовательность из depth случайных ходов с помощью функции create_random_moves
     Симулирует эту последовательность ходов.
     Оценивает финальное состояние после эти depth шагов с помощью функции estimate и запоминает лучшую.
 
     Когда время закончилось, возвращает лучшую последовательность ходов.
-    
-    На каждый ход даётся 50 миллисекунд. 
+
+    На каждый ход даётся 50 миллисекунд.
     Чтобы засечь время, воспользуйтесь функцией time.time() — она возвращает текущее время в секундах (дробное число).
+
+    Когда закончите, подберите подходящее значение глубины (depth) экспериментально.
     """
     best_moves = []
     best_score = -math.inf
@@ -97,7 +108,7 @@ def random_search(state, depth):
     return best_moves
 
 
-def read_checkpoints():
+def read_checkpoints() -> list[tuple[int, int]]:
     n = int(input())  # количество чекпоинтов
     checkpoints = []
     for i in range(n):
@@ -117,7 +128,7 @@ def main():
         if predicted_state:
             print(predicted_state, file=sys.stderr)
             # Проверка, что наша симуляция работает точно так же как и официальная.
-            # Если раскомментировать строку ниже, то решение начнет падать с ошибкой каждый раз, 
+            # Если раскомментировать строку ниже, то решение начнет падать с ошибкой каждый раз,
             # когда наша симуляция ошиблась, предсказывая к чему приведет наш предыдущий ход
             # assert str(predicted_state) == str(state)
 

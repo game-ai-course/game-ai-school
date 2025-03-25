@@ -1,7 +1,7 @@
 import math
 
 
-def heuristic(checkpoint):
+def heuristic(checkpoint: tuple[int, int]) -> str:
     """На полном ходу летим к следующему флагу"""
     return f"{checkpoint[0]} {checkpoint[1]} 200"
 
@@ -13,7 +13,7 @@ def norm_angle(a: float) -> float:
     return a
 
 
-def heuristic2(checkpoint, x, y, angle):
+def heuristic2(checkpoint: tuple[int, int], x: int, y: int, angle: int) -> str:
     """
     Включаем полный ход, если смотрим почти на следующий флаг.
     Поворачиваемся в сторону следующего флага.
@@ -28,7 +28,7 @@ def heuristic2(checkpoint, x, y, angle):
     return f"{cx} {cy} 200 thrust"
 
 
-def heuristic3(checkpoint, x, y, vx, vy, angle):
+def heuristic3(checkpoint: tuple[int, int], x: int, y: int, vx: int, vy: int, angle: int) -> str:
     """
     Если текущая скорость такая, что до следующего чекпоинта мы докатимся по инерции,
     то выключаем двигатель.
@@ -36,9 +36,7 @@ def heuristic3(checkpoint, x, y, vx, vy, angle):
     pass
 
 
-
-
-def read_checkpoints():
+def read_checkpoints() -> list[tuple[int, int]]:
     n = int(input())  # количество чекпоинтов
     checkpoints = []
     for i in range(n):
@@ -53,11 +51,9 @@ def main():
         checkpoint_index, x, y, vx, vy, angle = [int(i) for i in input().split()]
         checkpoint = checkpoints[checkpoint_index]
         # X Y THRUST MESSAGE
-        # print(heuristic(checkpoint))
-        print(heuristic2(checkpoint, x, y, angle))
-        # print(heuristic3(checkpoint, x, y, angle))
-        next_checkpoint = checkpoints[(checkpoint_index+1) % len(checkpoints)]  # @solved
-        # print(heuristic3(checkpoint, next_checkpoint, x, y, vx, vy, angle))  # @solved
+        print(heuristic(checkpoint))
+        # print(heuristic2(checkpoint, x, y, angle))
+        # next_checkpoint = checkpoints[(checkpoint_index + 1) % len(checkpoints)]
 
 
 if __name__ == '__main__':

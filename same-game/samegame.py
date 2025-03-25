@@ -3,6 +3,7 @@ import sys
 import time
 from typing import Optional
 
+
 # В этом файле активно используются type hints — возможность указать типы
 # аргументов и возвращаемого результата у функций вот, например, так:
 #
@@ -17,12 +18,11 @@ from typing import Optional
 #   Optional[str] — либо строка, либо None
 
 class State:
-    def __init__(self, columns: 'list[list[int]]', score: int = 0):
+    def __init__(self, columns: list[list[int]], score: int = 0):
         self.columns = columns
         self.score = score
 
-
-    def __str__(self):
+    def __str__(self) -> str:
         w = len(self.columns)
         if w == 0:
             return '.'
@@ -35,8 +35,7 @@ class State:
             rows.append(' '.join(row))
         return '\n'.join(rows)
 
-
-    def moves(self) -> 'list[list[tuple[int, int]]]':
+    def moves(self) -> list[list[tuple[int, int]]]:
         """
         Задание 1
         Возвращает список ходов, которые можно отправить в apply_move.
@@ -52,8 +51,7 @@ class State:
         """
         pass
 
-
-    def dfs(self, x: int, y: int, move: 'list[tuple[int, int]]'):
+    def dfs(self, x: int, y: int, move: list[tuple[int, int]]) -> list[tuple[int, int]]:
         """
         Задание 2
         Поиск в глубину.
@@ -68,8 +66,7 @@ class State:
         """
         pass
 
-
-    def apply_move(self, move: 'list[tuple[int, int]]') -> 'State':
+    def apply_move(self, move: list[tuple[int, int]]) -> State:
         """
         Задание 3
         Применяет ход и возвращает новое состояние (не меняя текущее!)
@@ -85,8 +82,7 @@ class State:
         pass
 
 
-
-def greedy_ai(state: State, estimate_state) -> 'Optional[list[tuple[int, int]]]':
+def greedy_ai(state: State, estimate_state) -> Optional[list[tuple[int, int]]]:
     """
     Задание 4
     Среди всех доступных ходов выбирает тот, после применения которого, estimate_state дает максимальное значение.
@@ -103,10 +99,9 @@ def estimate(state: State) -> float:
     pass
 
 
-
-
 class Node:
-    def __init__(self, score: float, state: State, parent_node: Optional['Node'], move: Optional[list[tuple[int, int]]]):
+    def __init__(self, score: float, state: State, parent_node: Optional[Node],
+                 move: Optional[list[tuple[int, int]]]):
         self.score = score
         self.state = state
         self.parent_node = parent_node
@@ -116,7 +111,7 @@ class Node:
         return self.score > other.score
 
 
-def get_next_nodes(node: Node, estimate_state):
+def get_next_nodes(node: Node, estimate_state) -> list[Node]:
     pass
 
 
@@ -124,11 +119,11 @@ def chokudai_search(state: State, estimate_state) -> Node:
     pass
 
 
-def chokudai_solve(state: State) -> 'list[list[tuple[int, int]]]':
+def chokudai_solve(state: State) -> list[list[tuple[int, int]]]:
     pass
 
 
-def solve(state: State) -> 'list[list[tuple[int, int]]]':
+def solve(state: State) -> list[list[tuple[int, int]]]:
     """
     На codingame.com на первый ход дают 20 секунд, а на последующие всего по 50ms.
     Поэтому выгодно решить полностью весь уровень на первом ходу и вернуть список всех ходов.
@@ -143,7 +138,7 @@ def solve(state: State) -> 'list[list[tuple[int, int]]]':
     return solution
 
 
-def read_state_from(lines: 'list[str]') -> State:
+def read_state_from(lines: list[str]) -> State:
     """
     Читает состояние из списка строк.
     Удобно использовать при тестировании
